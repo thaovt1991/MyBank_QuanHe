@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "deposits")
 public class Deposit {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -19,11 +20,15 @@ public class Deposit {
     private LocalDateTime created_at = LocalDateTime.now();
 
 
-
     public Deposit(){}
 
     public Deposit(Long id, Customer customer, long amount) {
         this.id = id;
+        this.customer = customer;
+        this.amount = amount;
+    }
+
+    public Deposit(Customer customer, long amount) {
         this.customer = customer;
         this.amount = amount;
     }

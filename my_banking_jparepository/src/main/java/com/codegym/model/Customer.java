@@ -42,6 +42,20 @@ public class Customer {
         this.address = address;
     }
 
+    public Customer(Long id, String fullName, String email, String phone, String address, long balance, boolean isDelete, LocalDateTime created_at, List<Deposit> deposits, List<Withdraw> withdraws, List<Transfer> senders, List<Transfer> recipients) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.balance = balance;
+        this.isDelete = isDelete;
+        this.created_at = created_at;
+        this.deposits = deposits;
+        this.withdraws = withdraws;
+        this.senders = senders;
+        this.recipients = recipients;
+    }
 
     public Long getId() {
         return id;
@@ -55,8 +69,8 @@ public class Customer {
         return fullName;
     }
 
-    public void setFullName(String fullname) {
-        this.fullName = fullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {

@@ -24,7 +24,7 @@ public class DepositsController {
     private IDepositService depositService;
 
     @GetMapping("/deposit/{id}")
-    private ModelAndView viewDeposits(@PathVariable Long id){
+    private ModelAndView viewDeposits(@PathVariable Long id) {
         Optional<Customer> customer = customerService.findById(id);
         if (customer.isPresent()) {
             ModelAndView modelAndView = new ModelAndView("/customer/deposit");
@@ -39,25 +39,36 @@ public class DepositsController {
         }
 
     }
-    @PostMapping("/deposit")
-    private ModelAndView saveDeposits(@ModelAttribute("deposits") Deposit deposits){
-        Customer customer = customerService.findById(deposits.getCustomer().getId()).get();
+
+    @PostMapping("/deposit/{customerId}")
+    private ModelAndView saveDeposits(@PathVariable Long customerId, @ModelAttribute("deposits") Deposit deposits) {
+
+        Customer customer = customerService.findById(customerId).get();
+
         long money_deposits = deposits.getAmount();
+
         boolean isMoney = false;
+
         if (money_deposits >= 1000 && money_deposits <= 1000000000) {
             isMoney = true;
         }
+
         ModelAndView modelAndView = new ModelAndView("/customer/deposit");
-        if(isMoney){
-        depositService.save(deposits);
-        customer.setBalance(customer.getBalance()+deposits.getAmount());
-        customerService.save(customer);
+
+        if (isMoney) {
+            deposits.setCustomer(customer);
+            depositService.save(deposits);
+            customer.setBalance(customer.getBalance() + deposits.getAmount());
+            customerService.save(customer);
             modelAndView.addObject("message", "Deposits successfully");
-        }else {
-            modelAndView.addObject("error","Deposits error !");
         }
+        else {
+            modelAndView.addObject("error", "Deposits error !");
+        }
+
         modelAndView.addObject("deposit", new Deposit());
-        modelAndView.addObject("customer",customer);
-        return modelAndView ;
+        modelAndView.addObject("customer", customer);
+
+        return modelAndView;
     }
 }
